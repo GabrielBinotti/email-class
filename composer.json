@@ -1,0 +1,25 @@
+{
+    "name": "gabriel-binotti/email",
+    "description": "Simple example to send email with phpmailer",
+    "type": "library",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Gabriel da Silva Binotti",
+            "email": "gabrielbinotti.dev@gmail.com"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {
+            "GabrielBinottiEmail\\" : "appEmail"
+        }
+    },
+
+    "minimum-stability": "stable",
+    "require": {
+        "PHP": ">=7.0",
+        "phpmailer/phpmailer": "^6.9"
+    }
+
+}
