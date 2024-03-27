@@ -77,4 +77,26 @@ $arrayReplace = [
 
  template('template.html', $arrayReplace);
 ```
+You can send file in you email. You need add file in <b>vendor/appEmail/files/</b>
+```php
+addFile("filename.format", "name file");
+```
 
+You can add image in your body. Add the image in <b>vendor/appEmail/images/</b>
+```php
+addImage("image.format", "name image");
+```
+To add image in your body email, you need create a template, example above:
+```php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <img src="cid:nameImage" alt="">
+</body>
+</html>
+```
