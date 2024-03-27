@@ -12,8 +12,9 @@ try {
         ->reply("gabriel.binotti1992@gmail.com", "Gabriel ")
         ->destination("desenvolvimentonetwave@gmail.com", 'Gabriel')
         ->subject("Aqui esta atenção tes de email")
-        ->template('temp.html')
-        ->addImage("teste.jpeg", "teste")
+        ->bodyHtml('rere')
+        //->template('temp.html', $array)
+        //->addImage("teste.jpeg", "teste")
         ->options([
             "ssl" => [
                 'verify_peer'       => false,
@@ -22,6 +23,7 @@ try {
             ]
         ])
         ->send();
+        
 } catch (Exception $e) {
     echo $e->getMessage();
 }

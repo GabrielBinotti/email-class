@@ -3,12 +3,12 @@
 namespace GabrielBinottiEmail;
 
 use GabrielBinottiEmail\AbstractEmail;
-use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
+
 
 class Email extends AbstractEmail
 {
+    use TraitEmail;
 
     private $mail;
     private $file;
@@ -32,34 +32,6 @@ class Email extends AbstractEmail
     {
         self::$emailObj = new Email($fileName);
         return self::$emailObj;
-    }
-
-    protected function setConfig($fileName)
-    {
-        $path = dirname(__FILE__) . "/config/";
-
-        if (!file_exists($path . $fileName . ".ini")) {
-            throw new Exception("O arquivo de configuração de email .ini não exite!");
-        }
-
-        $this->file = (object) parse_ini_file(
-            $path . $fileName . ".ini");
-    }
-
-    public function debug($type = 'off')
-    {
-        switch ($type) {
-            case 'server':
-                $this->mail->SMTPDebug = SMTP::DEBUG_SERVER;
-                break;
-            case 'client':
-                $this->mail->SMTPDebug = SMTP::DEBUG_CLIENT;
-                break;
-            case 'off':
-                $this->mail->SMTPDebug = SMTP::DEBUG_OFF;
-                break;
-        }
-        return $this;
     }
 
     public function from($email, $name)
@@ -96,9 +68,12 @@ class Email extends AbstractEmail
     public function template($templateName, $replace = [])
     {
 
-        if(!empty($replace)){
-            
-        }else{
+        if (!empty($replace)) {
+
+            $template = file_get_contents(dirname(__FILE__) . "/template/{$templateName}");
+            $template = $this->replace($template, $replace);
+            $this->mail->msgHTML($template);
+        } else {
             $this->mail->msgHTML(file_get_contents(dirname(__FILE__) . "/template/{$templateName}"));
         }
         return $this;
@@ -109,8 +84,8 @@ class Email extends AbstractEmail
         foreach ($replace as $key => $value) {
 
             $templateName = str_replace(
-                $replace[$key]->valueBefore,
-                $replace[$key]->valueAfter,
+                $value['before'],
+                $value['after'],
                 $templateName
             );
         }
@@ -132,14 +107,14 @@ class Email extends AbstractEmail
         return $this;
     }
 
-    public function send()
-    {
-        $this->mail->send();
-    }
-
     public function options($array)
     {
         $this->mail->SMTPOptions = $array;
         return $this;
+    }
+
+    public function send()
+    {
+        $this->mail->send();
     }
 }
